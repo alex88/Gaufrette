@@ -4,6 +4,7 @@ namespace Gaufrette\Adapter;
 
 use \AmazonS3 as AmazonClient;
 use Gaufrette\Adapter;
+use Gaufrette\UriAware;
 
 /**
  * Amazon S3 adapter
@@ -13,7 +14,8 @@ use Gaufrette\Adapter;
  * @author  Leszek Prabucki <leszek.prabucki@gmail.com>
  */
 class AmazonS3 implements Adapter,
-                          MetadataSupporter
+                          MetadataSupporter,
+                          UriAware
 {
     protected $service;
     protected $bucket;
@@ -235,6 +237,27 @@ class AmazonS3 implements Adapter,
         }
 
         return false;
+    }
+
+    /**
+     * Retrieve the S3 object URL for the given key.
+     *
+     * @param string $key
+     * @param integer|string $preauth Look at \AmazonS3::get_object_url() docs
+     * @param array $opt Look at \AmazonS3::get_object_url() docs
+     *
+     * @see \AmazonS3::get_object_url()
+     *
+     * @return string The S3 object URL
+     */
+    public function getUri($key)
+    {
+        return $this->service->get_object_url(
+            $this->bucket,
+            $this->computePath($key),
+            0,
+            array()
+        );
     }
 
     /**
