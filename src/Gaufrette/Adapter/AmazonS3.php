@@ -33,7 +33,7 @@ class AmazonS3 implements Adapter,
         );
     }
 
-    /** 
+    /**
      * Set the acl used when writing files
      *
      * @param string $acl
@@ -45,7 +45,7 @@ class AmazonS3 implements Adapter,
 
     /**
      * Get the acl used when writing files
-     * 
+     *
      * @return string
      */
     public function getAcl()
@@ -256,6 +256,24 @@ class AmazonS3 implements Adapter,
             $this->bucket,
             $this->computePath($key),
             0,
+            array()
+        );
+    }
+
+    /**
+     * Retrieve the S3 object URL for the given key with presigned url
+     * with $minutes of working timespan
+     *
+     * @param $key
+     *
+     * @return string The S3 object presigned URL
+     */
+    public function getPresignedUri($key, $minutes = 5)
+    {
+        return $this->service->get_object_url(
+            $this->bucket,
+            $this->computePath($key),
+            '+' . $minutes . ' minutes',
             array()
         );
     }
