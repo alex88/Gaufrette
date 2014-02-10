@@ -155,6 +155,7 @@ class AmazonS3 implements Adapter,
         );
 
         if (!$response->isOK()) {
+            throw new \Exception('Response from aws is: ' . json_encode($response));
             return false;
         };
 
