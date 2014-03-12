@@ -257,7 +257,7 @@ class AmazonS3 implements Adapter,
             $this->bucket,
             $this->computePath($key),
             0,
-            array('https' => true)
+            array()
         );
     }
 
